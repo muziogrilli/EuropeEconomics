@@ -160,22 +160,14 @@ regData$nnatdes <- log((regData$n_nat_des_stock / regData$employment) + 1.0)
 # Submodel 1: this model represents a pooled model where the data on different firms
 #             are simply pulled together with no provisions for individual differences
 #             Individual heterogeneity is therefore not allowed.
-reg1 = lm(log_rev_empl ~ ip_owner + sme + age                   , data = regData)
-
-# Submodel 2: fixed effect: country
-reg2 <- lm(log_rev_empl ~ ip_owner + sme + age + country        , data = regData)
-lh2 <- linearHypothesis (reg2, matchCoefs(reg2, "country"), type=c("F"))
-
-# Submodel 3: fixed effect: sector
-reg3 = lm(log_rev_empl ~ ip_owner + sme + age           + sector, data = regData)
-lh3 <- linearHypothesis (reg3, matchCoefs(reg3, "sector") , type=c("F"))
-
-# Submodel 4: fixed effect: country + sector 
-reg4 = lm(log_rev_empl ~ ip_owner + sme + age + country + sector, data = regData)
-lh4 <- linearHypothesis (reg4, c(matchCoefs(reg4, "country"), matchCoefs(reg4, "sector")) , type=c("F"))
+reg1 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme                   , data = regData)
+reg2 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme + country         , data = regData)
+reg3 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme           + sector, data = regData)
+reg4 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme + country + sector, data = regData)
+reg5 = lm(log_rev_empl ~ ip_owner + sme + age +                  country + sector, data = regData)
 
 # Generate output tables
-stargazer(reg4, reg3, reg2, reg1, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=c("IP Owner", "SME", "Age"), omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 1", align=FALSE, font.size = "tiny", no.space = FALSE, float = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_1.tex")
+stargazer(reg5, reg4, reg3, reg2, reg1, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=c("IP Owner", "SME", "Age", "IP Owner * SME"), omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 1", align=FALSE, font.size = "tiny", no.space = FALSE, float = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_1.tex")
 
 # MODEL 2: Table 15 portion 2
 
