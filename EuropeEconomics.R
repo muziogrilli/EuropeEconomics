@@ -46,6 +46,11 @@ Q3 <- quantile(cleanData[,plotFeature], .75)
 # compute inter-quantile range
 IQR <- IQR(cleanData[,plotFeature])
 
+# Lower portion
+el1 <- cleanData[cleanData$log_rev_empl < Q1 - 1.5*IQR,]
+# Upper portion
+el2 <- cleanData[cleanData$log_rev_empl > Q3 + 1.5*IQR,]
+
 # only keep rows in dataframe that have values within 1.5*IQR of Q1 and Q3
 cleanData_no <- subset(cleanData, cleanData[,plotFeature] > (Q1 - 1.5*IQR) & cleanData[,plotFeature] < (Q3 + 1.5*IQR))
 
@@ -160,14 +165,19 @@ regData$nnatdes <- log((regData$n_nat_des_stock / regData$employment) + 1.0)
 # Submodel 1: this model represents a pooled model where the data on different firms
 #             are simply pulled together with no provisions for individual differences
 #             Individual heterogeneity is therefore not allowed.
-reg1 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme                   , data = regData)
-reg2 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme + country         , data = regData)
-reg3 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme           + sector, data = regData)
-reg4 = lm(log_rev_empl ~ ip_owner + sme + age + ip_owner * sme + country + sector, data = regData)
-reg5 = lm(log_rev_empl ~ ip_owner + sme + age +                  country + sector, data = regData)
+reg1 = lm(log_rev_empl ~ ip_owner + age                                              , data = regData)
+reg2 = lm(log_rev_empl ~ ip_owner + age + country                                    , data = regData)
+reg3 = lm(log_rev_empl ~ ip_owner + age +         + sector                           , data = regData)
+reg4 = lm(log_rev_empl ~ ip_owner + age + country + sector                           , data = regData)
+
+reg5 = lm(log_rev_empl ~ ip_owner + age + country + sector                           , data = regData)
+reg6 = lm(log_rev_empl ~ ip_owner + age + country + sector + sme                     , data = regData)
+reg7 = lm(log_rev_empl ~ ip_owner + age + country + sector +     + log(employment+1) , data = regData)
+reg8 = lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = regData)
 
 # Generate output tables
-stargazer(reg5, reg4, reg3, reg2, reg1, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=c("IP Owner", "SME", "Age", "IP Owner * SME"), omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 1", align=FALSE, font.size = "tiny", no.space = FALSE, float = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_1.tex")
+reg_cov_labels <- c("IP Owner", "Age", "SME", "$Log(Employment)$")
+stargazer(reg8, reg7, reg6, reg5, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 1", align=FALSE, font.size = "tiny", no.space = FALSE, float = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_1.tex")
 
 # MODEL 2: Table 15 portion 2
 
@@ -185,13 +195,19 @@ stargazer(reg5, reg4, reg3, reg2, reg1, type = "latex", style="jpam", dep.var.la
 
 # Perform regression
 
-reg5 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age                   , data = regData)
-reg6 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country         , data = regData)
-reg7 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age           + sector, data = regData)
-reg8 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country + sector, data = regData)
+reg1 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age                   , data = regData)
+reg2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country         , data = regData)
+reg3 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age           + sector, data = regData)
+reg4 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector, data = regData)
+
+reg5 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector                           , data = regData)
+reg6 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme                     , data = regData)
+reg7 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = regData)
+reg8 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = regData)
 
 # Generate output tables
-stargazer(reg8, reg7, reg6, reg5, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "SME", "Age"), omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 2", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2.tex")
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME", "$Log(Employment)$")
+stargazer(reg8, reg7, reg6, reg5, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 part 2", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2.tex")
 
 # Repeat Analysis on the Subset belonging to SME Group
 regData_sme <- filter(regData, sme == 'sme')
@@ -320,5 +336,27 @@ reg8_leader = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_
 # Generate output tables
 stargazer(reg8_leader, reg7_leader, reg6_leader, reg5_leader, type = "latex", style="jpam", dep.var.labels = "$log (Rev / Employee)$", covariate.labels=cov_labes_is, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Strong", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2_leader.tex")
 
+# Repeat Analysis on the Subset belonging to Modest + Moderate Innovators Group
+regData_subg1 <- filter(regData, innovationLevel == 'modest' |  innovationLevel == 'moderate')
+
+reg5_subg1 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age                   , data = regData_subg1)
+reg6_subg1 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country         , data = regData_subg1)
+reg7_subg1 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age           + sector, data = regData_subg1)
+reg8_subg1 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country + sector, data = regData_subg1)
+
+# Repeat Analysis on the Subset belonging to Strong + Leader Innovators Group
+regData_subg2 <- filter(regData, innovationLevel == 'strong' |  innovationLevel == 'leader')
+
+reg5_subg2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age                   , data = regData_subg2)
+reg6_subg2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country         , data = regData_subg2)
+reg7_subg2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age           + sector, data = regData_subg2)
+reg8_subg2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + sme + age + country + sector, data = regData_subg2)
+
 # Generate output tables
-stargazer(reg8_modest, reg8_moderate, reg8_strong, reg8_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=cov_labes_is, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2_classcomparison.tex")
+stargazer(reg8_modest, reg8_moderate, reg8_strong, reg8_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=cov_labes_is, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2_classcomparison_1.tex")
+
+# Generate output tables
+stargazer(reg8_subg1, reg8_strong, reg8_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=cov_labes_is, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2_classcomparison_2.tex")
+
+# Generate output tables
+stargazer(reg8_subg1, reg8_subg2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=cov_labes_is, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out="table15_2_classcomparison_3.tex")
