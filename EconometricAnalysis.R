@@ -139,6 +139,9 @@ prop_table_el <- el                                  %>%
 # only keep rows in dataframe that have values within 1.5*IQR of Q1 and Q3
 cleanData_no <- subset(cleanData, cleanData[,baseFeature] > (Q1 - 1.5*IQR) & cleanData[,baseFeature] < (Q3 + 1.5*IQR))
 
+# Save clean data for further processing
+saveRDS(cleanData_no, file = "CleanData.rds")
+
 # MODEL 1: Table 15 portion 1
 # Perform regression of log_rev_empl using a log-linear model 
 
@@ -345,12 +348,33 @@ reg7_sub2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_de
 reg8_sub2 = lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = regData_sub2)
 
 # Generate comparison tables
+
+# SME Based
 reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME")
-out_file <- "MeanTable15_2_classcomparison_1.tex"
+out_file <- "MeanTable15_2_classcomparison_1_1.tex"
 stargazer(reg6_modest, reg6_moderate, reg6_strong, reg6_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-out_file <- "MeanTable15_2_classcomparison_2.tex"
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME")
+out_file <- "MeanTable15_2_classcomparison_2_1.tex"
 stargazer(reg6_sub1, reg6_strong, reg6_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-out_file <- "MeanTable15_2_classcomparison_3.tex"
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME")
+out_file <- "MeanTable15_2_classcomparison_3_1.tex"
 stargazer(reg6_sub1, reg6_sub2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+# Log Employment based
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "$Log(Employment)$")
+out_file <- "MeanTable15_2_classcomparison_1_2.tex"
+stargazer(reg7_modest, reg7_moderate, reg7_strong, reg7_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "$Log(Employment)$")
+out_file <- "MeanTable15_2_classcomparison_2_2.tex"
+stargazer(reg7_sub1, reg7_strong, reg7_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "$Log(Employment)$")
+out_file <- "MeanTable15_2_classcomparison_3_2.tex"
+stargazer(reg7_sub1, reg7_sub2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+
+
+
