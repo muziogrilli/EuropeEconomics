@@ -36,7 +36,7 @@ average_data <- Data %>%
 indicator_cols <- c("ip_owner"     , "sme"     , "country" , "sector"  ,
                     "patent_only"  , "tm_only" , "des_only", 
                     "pat_tm"       , "pat_des" , "tm_des"  ,
-                    "pat_tm_des"   )
+                    "pat_tm_des", "patent_owner", "tm_owner", "des_owner")
 
 indicator_data <- Data %>% 
                   group_by(BvD.ID.number) %>%  
@@ -354,11 +354,9 @@ reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Pat
 out_file <- "MeanTable15_2_classcomparison_1_1.tex"
 stargazer(reg6_modest, reg6_moderate, reg6_strong, reg6_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME")
 out_file <- "MeanTable15_2_classcomparison_2_1.tex"
 stargazer(reg6_sub1, reg6_strong, reg6_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME")
 out_file <- "MeanTable15_2_classcomparison_3_1.tex"
 stargazer(reg6_sub1, reg6_sub2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
@@ -367,14 +365,22 @@ reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Pat
 out_file <- "MeanTable15_2_classcomparison_1_2.tex"
 stargazer(reg7_modest, reg7_moderate, reg7_strong, reg7_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "$Log(Employment)$")
 out_file <- "MeanTable15_2_classcomparison_2_2.tex"
 stargazer(reg7_sub1, reg7_strong, reg7_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
-reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "$Log(Employment)$")
 out_file <- "MeanTable15_2_classcomparison_3_2.tex"
 stargazer(reg7_sub1, reg7_sub2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
 
+# SME + Log Employment Based
+reg_cov_labels <- c("Patent Only", "TM Only", "Design Only", "Patent - TM", "Patent - Design", "TM - Design", "Patent - TM - Design", "Age", "SME", "$Log(Employment)$")
+out_file <- "MeanTable15_2_classcomparison_1_3.tex"
+stargazer(reg8_modest, reg8_moderate, reg8_strong, reg8_leader, type = "latex", style="jpam", column.labels=c("Modest","Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+out_file <- "MeanTable15_2_classcomparison_2_3.tex"
+stargazer(reg8_sub1, reg8_strong, reg8_leader, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong","Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
+
+out_file <- "MeanTable15_2_classcomparison_3_3.tex"
+stargazer(reg8_sub1, reg8_sub2, type = "latex", style="jpam", column.labels=c("Modest + Moderate","Strong + Leader"), dep.var.labels = "$log (Rev / Employee)$", covariate.labels=reg_cov_labels, omit = c("country","sector"), omit.labels = c("Country?","Sector?"), title="Table 15 Model 2 - Classes Comparison 1", align=FALSE, font.size = "tiny", float = FALSE, single.row = FALSE, keep.stat = c("n","rsq","adj.rsq","res.dev","aic", "bic"), out=out_file)
 
 
