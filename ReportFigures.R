@@ -11,7 +11,7 @@ library(broom)
 
 
 # Define Working directory
-setwd("C:/Users/MG53060/Documents/GitHub/EuropeEconomics")
+setwd("C:/Users/MG53060/Documents/GitHub/EuropeEconomics/Figures")
 # Read processed dataset
 Data <- readRDS(file = "./CleanData.rds")
 
@@ -245,9 +245,9 @@ Data_SL <- filter(Data, innovationLevel == 'strong' |  innovationLevel == 'leade
 
 # Define models list
 model1_geo <- list()
-model1_geo[['Full Sample']]       <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data)
-model1_geo[['Modest + Moderate']] <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data_MM)
-model1_geo[['Strong + Leading']]  <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data_SL)
+model1_geo[["Full Sample"]]       <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data)
+model1_geo[["Modest+Moderate"]] <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data_MM)
+model1_geo[["Strong+Leading"]]  <- lm(log_rev_empl ~ ip_owner + age + country + sector + sme + log(employment+1) , data = Data_SL)
 
 cm <- c( "ip_owner" = "IP Ownership", "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 cap <- '<b> Model 1: IP Ownership split based on European Innovation Scoreboard </b>'
@@ -287,13 +287,13 @@ model2[['Variant 5']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pa
 model2[['Variant 6']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data)
 model2[['Variant 7']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data)
 
-cm <- c( "patent_only" = "Patent only" ,
-         "tm_only" = "Trademark Only",
-         "des_only" = "Design only",
-         "pat_tm" = "Patent - TM",
-         "pat_des" = "Patent - Design",
-         "tm_des" = "TM - Design",
-         "pat_tm_des" = "Patent - TM - Design",
+cm <- c( "patent_only" = "Patent only (b1)" ,
+         "tm_only" = "Trademark Only (b2)",
+         "des_only" = "Design only (b3)",
+         "pat_tm" = "Patent - TM (b4)",
+         "pat_des" = "Patent - Design (b5)",
+         "tm_des" = "TM - Design (b6)",
+         "pat_tm_des" = "Patent - TM - Design (b7)",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies </b>'
@@ -331,13 +331,13 @@ model2_size[['Full Sample']] <- lm(log_rev_empl ~ patent_only + tm_only + des_on
 model2_size[['SMEs']]        <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data_sme)
 model2_size[['Large']]       <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data_large)
 
-cm <- c( "patent_only" = "Patent only" ,
-         "tm_only" = "Trademark Only",
-         "des_only" = "Design only",
-         "pat_tm" = "Patent - TM",
-         "pat_des" = "Patent - Design",
-         "tm_des" = "TM - Design",
-         "pat_tm_des" = "Patent - TM - Design",
+cm <- c( "patent_only" = "Patent only (b1)" ,
+         "tm_only" = "Trademark Only (b2)",
+         "des_only" = "Design only (b3)",
+         "pat_tm" = "Patent - TM (b4)",
+         "pat_des" = "Patent - Design (b5)",
+         "tm_des" = "TM - Design (b6)",
+         "pat_tm_des" = "Patent - TM - Design (b7)",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies split between SMEs and large companies </b>'
@@ -370,17 +370,17 @@ tab %>%
 
 model2_geo <- list()
 
-model2_geo[['Full Sample']]       <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data)
-model2_geo[['Modest + Moderate']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_MM)
-model2_geo[['Strong + Leading']]  <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_SL)
+model2_geo[["Full Sample"]]       <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data)
+model2_geo[["Modest+Moderate"]] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_MM)
+model2_geo[["Strong+Leading"]]  <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_SL)
 
-cm <- c( "patent_only" = "Patent only" ,
-         "tm_only" = "Trademark Only",
-         "des_only" = "Design only",
-         "pat_tm" = "Patent - TM",
-         "pat_des" = "Patent - Design",
-         "tm_des" = "TM - Design",
-         "pat_tm_des" = "Patent - TM - Design",
+cm <- c( "patent_only" = "Patent only (b1)" ,
+         "tm_only" = "Trademark Only (b2)",
+         "des_only" = "Design only (b3)",
+         "pat_tm" = "Patent - TM (b4)",
+         "pat_des" = "Patent - Design (b5)",
+         "tm_des" = "TM - Design (b6)",
+         "pat_tm_des" = "Patent - TM - Design (b7)",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies split based on European Innovation Scoreboard </b>'
@@ -534,9 +534,9 @@ ggsave("BarPlot-Model1-SizeComparison.jpg",  dpi = 900)
 # Barplot Model 1 - Geographical Split
 
 # Create dataframe
-coeff_whole_m1_geo <- model1_geo[['Full Sample']]$coefficients[2]
-coeff_sme_m1_geo   <- model1_geo[['Modest + Moderate']]$coefficients[2]
-coeff_large_m1_geo <- model1_geo[['Strong + Leading']]$coefficients[2]
+coeff_whole_m1_geo <- model1_geo[["Full Sample"]]$coefficients[2]
+coeff_sme_m1_geo   <- model1_geo[["Modest+Moderate"]]$coefficients[2]
+coeff_large_m1_geo <- model1_geo[["Strong+Leading"]]$coefficients[2]
 
 perc_whole_m1_geo <- 100.0 * (exp(coeff_whole_m1_geo) - 1.0)
 perc_sme_m1_geo   <- 100.0 * (exp(coeff_sme_m1_geo)   - 1.0)
@@ -544,9 +544,9 @@ perc_large_m1_geo <- 100.0 * (exp(coeff_large_m1_geo) - 1.0)
 
 df_model1_geo <- data.frame(coeff = c(coeff_whole_m1_geo, coeff_sme_m1_geo, coeff_large_m1_geo),
                             perc  = c(perc_whole_m1_geo , perc_sme_m1_geo , perc_large_m1_geo ),
-                            group = c("Full Sample", "Modest + Moderate", "Strong + Leading"))
+                            group = c("Full Sample", "Modest+Moderate", "Strong+Leading"))
 
-df_model1_geo$group <- factor(df_model1_geo$group, levels = c("Full Sample", "Modest + Moderate", "Strong + Leading"))
+df_model1_geo$group <- factor(df_model1_geo$group, levels = c("Full Sample", "Modest+Moderate", "Strong+Leading"))
 
 df_model1_geo %>% 
   ggplot(aes(group, perc)) +
@@ -730,9 +730,9 @@ ggsave("BarPlot-Model2-SizeComparison.jpg",  dpi = 900)
 ######################################
 # Barplot Model 2 - Geo Split
 
-coeffs_whole_m2_geo <- model2_geo[['Full Sample']]$coefficients[2:8]
-coeffs_mm_m2_geo    <- model2_geo[['Modest + Moderate']]$coefficients[2:8]
-coeffs_sl_m2_geo    <- model2_geo[['Strong + Leading']]$coefficients[2:8]
+coeffs_whole_m2_geo <- model2_geo[["Full Sample"]]$coefficients[2:8]
+coeffs_mm_m2_geo    <- model2_geo[["Modest+Moderate"]]$coefficients[2:8]
+coeffs_sl_m2_geo    <- model2_geo[["Strong+Leading"]]$coefficients[2:8]
 
 perc_whole_m2_geo <- 100.0 * (exp(coeffs_whole_m2_geo) - 1.0)
 perc_mm_m2_geo    <- 100.0 * (exp(coeffs_mm_m2_geo) - 1.0)
@@ -741,9 +741,9 @@ perc_sl_m2_geo    <- 100.0 * (exp(coeffs_sl_m2_geo) - 1.0)
 cutpoints_vec <- c(0, 0.01, 0.05, 0.1, 1.0)
 symbols_vec   <- c("***", "**", "*", " ")
 
-label_full <- symnum(tidy(model2_geo[['Full Sample']])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
-label_MM   <- symnum(tidy(model2_geo[['Modest + Moderate']])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
-label_SL   <- symnum(tidy(model2_geo[['Strong + Leading']])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
+label_full <- symnum(tidy(model2_geo[["Full Sample"]])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
+label_MM   <- symnum(tidy(model2_geo[["Modest+Moderate"]])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
+label_SL   <- symnum(tidy(model2_geo[["Strong+Leading"]])$p.value, corr = FALSE, na = FALSE, cutpoints = cutpoints_vec, symbols = symbols_vec)[2:8]
 
 # Add sub sample size
 label_full[1] <- paste0(label_full[1], " N = ", nrow(subset(Data, patent_only == 1)))
@@ -782,18 +782,18 @@ df_m2_geo_MM <- data.frame(coeff = coeffs_mm_m2_geo,
                            perc  = perc_mm_m2_geo,
                            group = c("b1", "b2", "b3", "b4", "b5", "b6", "b7"))
 
-df_m2_geo_MM$dataset <- "Modest + Moderate"
+df_m2_geo_MM$dataset <- "Modest+Moderate"
 
 # Large companies
 df_m2_geo_SL <- data.frame(coeff = coeffs_sl_m2_geo,
                            perc  = perc_sl_m2_geo,
                            group = c("b1", "b2", "b3", "b4", "b5", "b6", "b7"))
 
-df_m2_geo_SL$dataset <- "Strong + Leading"
+df_m2_geo_SL$dataset <- "Strong+Leading"
 
 
 df_m2_geo <- rbind(df_m2_geo_fs, df_m2_geo_MM, df_m2_geo_SL)
-df_m2_geo$dataset <- factor(df_m2_geo$dataset, levels = c("Full Sample", "Modest + Moderate", "Strong + Leading"))
+df_m2_geo$dataset <- factor(df_m2_geo$dataset, levels = c("Full Sample", "Modest+Moderate", "Strong+Leading"))
 
 offset_x1 <- 0.22
 offset_x2 <- 0.0
