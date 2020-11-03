@@ -287,13 +287,13 @@ model2[['Variant 5']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pa
 model2[['Variant 6']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data)
 model2[['Variant 7']] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data)
 
-cm <- c( "patent_only" = "Patent only (b1)" ,
-         "tm_only" = "Trademark Only (b2)",
-         "des_only" = "Design only (b3)",
-         "pat_tm" = "Patent - TM (b4)",
-         "pat_des" = "Patent - Design (b5)",
-         "tm_des" = "TM - Design (b6)",
-         "pat_tm_des" = "Patent - TM - Design (b7)",
+cm <- c( "patent_only" = "Patent only" ,
+         "tm_only" = "Trademark Only",
+         "des_only" = "Design only",
+         "pat_tm" = "Patent - TM",
+         "pat_des" = "Patent - Design",
+         "tm_des" = "TM - Design",
+         "pat_tm_des" = "Patent - TM - Design",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies </b>'
@@ -331,13 +331,13 @@ model2_size[['Full Sample']] <- lm(log_rev_empl ~ patent_only + tm_only + des_on
 model2_size[['SMEs']]        <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data_sme)
 model2_size[['Large']]       <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector       + log(employment+1) , data = Data_large)
 
-cm <- c( "patent_only" = "Patent only (b1)" ,
-         "tm_only" = "Trademark Only (b2)",
-         "des_only" = "Design only (b3)",
-         "pat_tm" = "Patent - TM (b4)",
-         "pat_des" = "Patent - Design (b5)",
-         "tm_des" = "TM - Design (b6)",
-         "pat_tm_des" = "Patent - TM - Design (b7)",
+cm <- c( "patent_only" = "Patent only" ,
+         "tm_only" = "Trademark Only",
+         "des_only" = "Design only",
+         "pat_tm" = "Patent - TM",
+         "pat_des" = "Patent - Design",
+         "tm_des" = "TM - Design",
+         "pat_tm_des" = "Patent - TM - Design",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies split between SMEs and large companies </b>'
@@ -374,13 +374,13 @@ model2_geo[["Full Sample"]]       <- lm(log_rev_empl ~ patent_only + tm_only + d
 model2_geo[["Modest+Moderate"]] <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_MM)
 model2_geo[["Strong+Leading"]]  <- lm(log_rev_empl ~ patent_only + tm_only + des_only + pat_tm + pat_des + tm_des + pat_tm_des + age + country + sector + sme + log(employment+1) , data = Data_SL)
 
-cm <- c( "patent_only" = "Patent only (b1)" ,
-         "tm_only" = "Trademark Only (b2)",
-         "des_only" = "Design only (b3)",
-         "pat_tm" = "Patent - TM (b4)",
-         "pat_des" = "Patent - Design (b5)",
-         "tm_des" = "TM - Design (b6)",
-         "pat_tm_des" = "Patent - TM - Design (b7)",
+cm <- c( "patent_only" = "Patent only" ,
+         "tm_only" = "Trademark Only",
+         "des_only" = "Design only",
+         "pat_tm" = "Patent - TM",
+         "pat_des" = "Patent - Design",
+         "tm_des" = "TM - Design",
+         "pat_tm_des" = "Patent - TM - Design",
          "age" = "Age", "smesme" = "SME", "log(employment + 1)" = "Log(Employment + 1)", '(Intercept)' = 'Constant')
 
 cap <- '<b> Model 2: IP Strategies split based on European Innovation Scoreboard </b>'
@@ -707,10 +707,10 @@ ggplot(data=df_m2_size, aes(x=group, y=perc, fill=dataset)) +
     plot.margin = unit(rep(1, 4), "cm"),
     axis.text = element_text(size = 14, color = "#22292F"),
     axis.title = element_text(size = 14, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 15)),
+    axis.title.x = element_blank(),
     axis.title.y = element_text(margin = margin(r = 15)),
     axis.text.y = element_text(margin = margin(r = 5)),
-    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.x = element_text(margin = margin(t = 5), angle=90, hjust=1, size=10, vjust=0.3),
     plot.caption = element_text(size = 12, 
                                 face = "italic",
                                 color = "#606F7B",
@@ -722,7 +722,8 @@ ggplot(data=df_m2_size, aes(x=group, y=perc, fill=dataset)) +
     panel.grid.minor.y = element_blank(),
     legend.position = "right",  
     legend.title = element_blank()  
-  )
+  )+
+  scale_x_discrete(labels=c("b1" = "Patent Only", "b2" = "TM Only",  "b3" = "Design Only", "b4" = "Patent - TM", "b5" = "Patent - Design",  "b6" = "TM - Design", "b7" = "Patent - TM - Design"))
 
 ggsave("BarPlot-Model2-SizeComparison.jpg",  dpi = 900)
 
@@ -842,10 +843,10 @@ ggplot(data=df_m2_geo, aes(x=group, y=perc, fill=dataset)) +
     plot.margin = unit(rep(1, 4), "cm"),
     axis.text = element_text(size = 14, color = "#22292F"),
     axis.title = element_text(size = 14, hjust = 1),
-    axis.title.x = element_text(margin = margin(t = 15)),
+    axis.title.x = element_blank(),
     axis.title.y = element_text(margin = margin(r = 15)),
     axis.text.y = element_text(margin = margin(r = 5)),
-    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.x = element_text(margin = margin(t = 5), angle=90, hjust=1, size=10, vjust=0.3),
     plot.caption = element_text(size = 12, 
                                 face = "italic",
                                 color = "#606F7B",
@@ -857,6 +858,7 @@ ggplot(data=df_m2_geo, aes(x=group, y=perc, fill=dataset)) +
     panel.grid.minor.y = element_blank(),
     legend.position = "right",  
     legend.title = element_blank()  
-  )
+  ) +
+  scale_x_discrete(labels=c("b1" = "Patent Only", "b2" = "TM Only",  "b3" = "Design Only", "b4" = "Patent - TM", "b5" = "Patent - Design",  "b6" = "TM - Design", "b7" = "Patent - TM - Design"))
 
 ggsave("BarPlot-Model2-GeoComparison.jpg",  dpi = 900)
